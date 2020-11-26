@@ -1,21 +1,27 @@
-$( document ).ready(function() {
-    $.ajax({
-        url: 'http://127.0.0.1:5000/produtos',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type':'application/json'
-        },
-        type: "GET",
-        dataType: "json"
-    }).done((data) => {
-        for(i = 0; i < data.length; i++){
-            let row = "<tr>";
-            row = row.concat("<td>" + data[i].nome + "</td>");
-            row = row.concat("<td>" + data[i].preco + "</td>");
-            row = row.concat("<td>" + data[i].qtd + "</td>");
-            
-            row = row.concat("</tr>");
-            $("#listaProduto").append(row);
+$(document).ready(function() {
+    $("#linkListarProdutos").click(function(){
+        $.ajax({
+            url: 'http://localhost:5000/listar_produtos',
+            method: 'GET',
+            dataType: "json",
+            sucess: listar_produtos,
+            error: function(){
+                alert("Erro nos dados")
+            }
+
+        })
+        
+        function listar_produtos(produtos){
+            linhas = " "
+            for(var i in produtos){
+                lin ="<tr>"+
+                "<th>"+ produtos[i].nome +"</th>"+
+                "<th>"+ produtos[i].preco +"</th>"+
+                "<th>"+ produtos[i].qtd +"</th>"+
+                "</tr>"
+                linhas = linhas + lin;
+            }
+            $("#corpoTabelaProdutos").html(linhas);
         }
-    });
+    })     
 });
